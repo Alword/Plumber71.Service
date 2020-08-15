@@ -1,0 +1,33 @@
+﻿<div style="
+    width: @WidthPx;
+    height: @HeightPx;
+    background-image: @BackGroundImage;
+    background-position: @BackgroundPosition" />
+
+@code {
+    [Parameter] public int Width { get; set; }
+    [Parameter] public int Height { get; set; }
+    [Parameter] public int TileX { get; set; }
+    [Parameter] public int TileY { get; set; }
+    [Parameter] public string Source { get; set; }
+
+    private int x;
+    private int y;
+    private string BackgroundPosition
+    {
+        get => $"-{x}px -{y}px";
+    }
+    private string BackGroundImage { get => $"url('{Source}')"; }
+
+
+    private string WidthPx { get => $"{Width}px"; }
+    private string HeightPx { get => $"{Height}px"; }
+
+    protected override void OnParametersSet()
+    {
+        x = (TileX * Width);
+        y = (TileY * Height);
+        StateHasChanged();
+    }
+
+}

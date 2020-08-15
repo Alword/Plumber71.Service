@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,11 +18,16 @@ namespace Slepushko
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+            Environment = environment;
+            Configuration = new ConfigurationBuilder()
+                     .AddJsonFile("appsettings.json")
+                     .AddJsonFile($"appsettings.{Environment.EnvironmentName}.json")
+                     .AddJsonFile($"appsettings.secret.json")
+                     .Build();
         }
-
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -33,6 +39,28 @@ namespace Slepushko
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<PlumberContext>();
+                using (PlumberContext context = new PlumberContext())
+                {
+                    context.ServiceTitles.Add(new ServiceTitle()
+                    {
+                        Title = "«а€вка в общем виде",
+                        Description = "”становка и замена любого сантехнического оборудовани€",
+                        Heigth = 100,
+                        Width = 100,
+                        Url = "/img/service-set-1.png"
+                    });
+                    context.SaveChanges();
+                }
+            }
+            else
+            {
+                services.AddDbContext<PlumberContext>(d => d.UseMySql(Configuration.GetConnectionString("Default")));
+            }
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +102,7 @@ namespace Slepushko
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            
+
         }
     }
 }

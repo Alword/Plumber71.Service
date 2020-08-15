@@ -1,5 +1,7 @@
 ﻿@page "/"
+@using Slepushko.Data;
 @using Microsoft.Extensions.Localization;
+@inject PlumberContext context;
 @inject IStringLocalizer<Index> localization;
 <div class="container">
     <h1>@localization["Catalog of services"]</h1>
@@ -16,21 +18,30 @@
     </div>
 
     <div class="row mt-4">
-        <ServicePreview></ServicePreview>
-        <ServicePreview></ServicePreview>
-        <ServicePreview></ServicePreview>
-        <ServicePreview></ServicePreview>
-        <ServicePreview></ServicePreview>
+        @if (ServiceTitles == null)
+        {
+
+        }
+        else
+        {
+            foreach (var title in ServiceTitles)
+            {
+                <ServicePreview Service="@title" />
+            }
+        }
     </div>
 </div>
 
 @code
 {
+    private List<ServiceTitle> ServiceTitles { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await Task.Delay(1000);
+            ServiceTitles = context.ServiceTitles.ToList();
+            StateHasChanged();
         }
     }
 }

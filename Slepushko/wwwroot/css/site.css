@@ -30,14 +30,12 @@ app {
     flex: 1;
 }
 
-.navbar {
-    background-color: #1e3685;
-}
-
 .content {
     padding-top: 1.1rem;
 }
-
+.navbar {
+    background-color: #f9f9f9;
+}
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }

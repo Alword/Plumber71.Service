@@ -1,13 +1,16 @@
-﻿
+﻿@using Slepushko.Data;
 <div class="col-md-6 col-lg-4 mb-3">
     <div class="card">
         <div class="card-body">
-            <a class="card-title" href=""><h5>Special title treatment</h5></a>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a class="card-title" href=""><h5>@Service.Title</h5></a>
+            <div class="d-flex">
+                <Atlas TileX="@Service.X" TileY="@Service.Y" Source="@Service.Url" Width="@Service.Width" Height="Service.Heigth" />
+                <p class="card-text ml-3 w-75">@Service.Description</p>
+            </div>
         </div>
     </div>
 </div>
-
 @code {
-
+    [Parameter]
+    public ServiceTitle Service { get; set; }
 }
