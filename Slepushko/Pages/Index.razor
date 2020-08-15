@@ -1,0 +1,36 @@
+﻿@page "/"
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<Index> localization;
+<div class="container">
+    <h1>@localization["Catalog of services"]</h1>
+
+    <div class="mt-5">
+        <div class="input-group input-group-lg p-2"
+             style="background-color: #bfe5ff">
+            <input type="text"
+                   placeholder="Введите название услуги"
+                   class="form-control"
+                   aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-lg">
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <ServicePreview></ServicePreview>
+        <ServicePreview></ServicePreview>
+        <ServicePreview></ServicePreview>
+        <ServicePreview></ServicePreview>
+        <ServicePreview></ServicePreview>
+    </div>
+</div>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1000);
+        }
+    }
+}

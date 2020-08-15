@@ -1,0 +1,26 @@
+﻿@using  System.Globalization;
+@inject NavigationManager Nav
+<select @bind="Culture" class="form-control">
+    @foreach (var culture in supportedCultures)
+    {
+        <option value="@culture">@culture.NativeName</option>
+    }
+</select>
+
+@code
+{
+    CultureInfo[] supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("ru-RU"),
+    };
+
+    CultureInfo Culture
+    {
+        get => CultureInfo.CurrentCulture;
+        set
+        {
+            CultureInfo.CurrentCulture = value;
+        }
+    }
+}
